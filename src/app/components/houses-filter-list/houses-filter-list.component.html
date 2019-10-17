@@ -1,0 +1,19 @@
+<ng-template #loading>
+  <app-loader></app-loader>
+</ng-template>
+<div *ngIf="data | async; else loading">
+  <li *ngFor="let dataItem of data | async">
+    <b *ngIf="dataItem.street">{{dataItem.street}}</b>
+    <span *ngIf="filter==='rooms'" class="text-muted"> - {{dataItem.params.rooms}} rooms</span>
+    <span *ngIf="dataItem.distance" class="text-muted"> - {{dataItem.distance}}m to walk</span>
+  </li>
+  <div *ngIf="filter==='distance' && (houseToMove | async) as houseToMove">
+    <hr>
+    <div class="alert alert-info" role="alert">
+      You are going to move into the house on the <b>{{houseToMove.street}}</b>
+      which is only <b>{{houseToMove.distance}}m</b> to walk from your sister's house.
+    </div>
+  </div>
+</div>
+
+

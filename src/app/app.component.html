@@ -1,0 +1,40 @@
+<div class="container pt-3">
+  <div class="card-deck">
+    <div class="card mb-6 shadow-sm">
+      <div class="card-header">
+        <h4 class="my-0 font-weight-normal">Distance filtered</h4>
+      </div>
+      <div class="card-body">
+        <ul class="list-unstyled mt-2 mb-2">
+          <app-rooms-filter-list [filter]="'distance'"></app-rooms-filter-list>
+        </ul>
+      </div>
+    </div>
+    <div class="mb-6">
+      <div class="card shadow-sm mb-4">
+        <div class="card-header">
+          <h4 class="my-0 font-weight-normal">Rooms Filtered</h4>
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled mt-2 mb-2">
+            <app-rooms-filter-list [filter]="'rooms'"></app-rooms-filter-list>
+          </ul>
+        </div>
+      </div>
+      <div class="card shadow-sm">
+        <div class="card-header">
+          <h4 class="my-0 font-weight-normal">Missing Data filtered</h4>
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled mt-2 mb-2">
+            <app-rooms-filter-list [filter]="'noData'"></app-rooms-filter-list>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
