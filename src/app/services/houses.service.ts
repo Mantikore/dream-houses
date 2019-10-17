@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 // @ts-ignore
 import {} from '@types/googlemaps';
 
 import {House} from '../models/house';
-import { map, mergeMap, switchMap } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
 import {GoogleMapsService} from './google-maps.service';
 
 @Injectable({
@@ -14,15 +14,21 @@ import {GoogleMapsService} from './google-maps.service';
 export class HousesService {
   private housesUrl = `/assets/data.json`;
   origin = ['Eberswalder Str. 55'];
+  loadingError$ = new Subject<boolean>();
 
   constructor(
     private http: HttpClient,
     private googleMapsService: GoogleMapsService
-  ) {
-  }
+  ) {}
 
   getAllHouses(): Observable<House[]> {
-    return this.http.get<any>(this.housesUrl).pipe(map(data => data.houses));
+    return this.http.get<any>(this.housesUrl).pipe(
+        map(data => data.houses),
+        catchError((error) => {
+          console.error('error loading the list of houses', error);
+          return of(`Oops! Problem with get base: ${error}`);
+        })
+      );
   }
 
   filterByRooms(): Observable<House[]> {

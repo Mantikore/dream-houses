@@ -1,10 +1,10 @@
 import { Component, Input, NgZone, OnInit } from '@angular/core';
 import { HousesService } from '../../services/houses.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { House } from '../../models/house';
 import { map, switchMap } from 'rxjs/operators';
 @Component({
-  selector: 'app-rooms-filter-list',
+  selector: 'app-houses-filter-list',
   templateUrl: './houses-filter-list.component.html',
   styleUrls: ['./houses-filter-list.component.scss']
 })

@@ -6,6 +6,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class GoogleMapsService {
+
+  gmapService = new google.maps.DistanceMatrixService();
+
   constructor(
     private zone: NgZone
   ) {}
@@ -17,16 +20,20 @@ export class GoogleMapsService {
       destinations.push(destination);
     });
     return new Observable((observer) => {
-      new google.maps.DistanceMatrixService().getDistanceMatrix(
+      this.gmapService.getDistanceMatrix(
         {
           origins,
           destinations,
           travelMode: google.maps.TravelMode.WALKING
-        }, (googleData: any) => {
-          const newArray = [...arrayOfData];
-          googleData.rows[0].elements.forEach((item: any, i: number) => newArray[i].distance = item.distance.value);
-          newArray.sort((a: House, b: House) => a.distance - b.distance);
-          this.zone.run(() => observer.next(newArray));
+        }, (googleData: any, status) => {
+          if (status === google.maps.DistanceMatrixStatus.OK) {
+            const newArray = [...arrayOfData];
+            googleData.rows[0].elements.forEach((item: any, i: number) => newArray[i].distance = item.distance.value);
+            newArray.sort((a: House, b: House) => a.distance - b.distance);
+            this.zone.run(() => observer.next(newArray));
+          } else {
+            alert(`Something wrong with Google Maps Service! Status code is ${status}`);
+          }
         }
       );
     });

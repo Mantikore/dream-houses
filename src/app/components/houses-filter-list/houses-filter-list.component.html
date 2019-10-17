@@ -1,8 +1,8 @@
 <ng-template #loading>
   <app-loader></app-loader>
 </ng-template>
-<div *ngIf="data | async; else loading">
-  <li *ngFor="let dataItem of data | async">
+<div *ngIf="data | async; else loading" class="houses-list">
+  <li *ngFor="let dataItem of data | async" class="houses">
     <b *ngIf="dataItem.street">{{dataItem.street}}</b>
     <span *ngIf="filter==='rooms'" class="text-muted"> - {{dataItem.params.rooms}} rooms</span>
     <span *ngIf="dataItem.distance" class="text-muted"> - {{dataItem.distance}}m to walk</span>
