@@ -54,7 +54,7 @@ export class HousesService {
   filterDistance(originAdr: string): Observable<House[]> {
     return this.getAllHouses().pipe(
       switchMap((data) => {
-        return this.googleMapsService.getDistances(Array('Berlin, ' + originAdr), data);
+        return this.googleMapsService.getDistances(Array(originAdr), data);
       })
     );
   }

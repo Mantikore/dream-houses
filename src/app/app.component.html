@@ -1,8 +1,8 @@
 <div class="container pt-3">
   <div class="input-group mb-3">
-    <input type="text" class="form-control" #inputOrigin  placeholder="My sister's address - {{originAdr}}" aria-label="My sister's address">
+    <input type="text" class="form-control" #inputOrigin  (keydown.enter)="changeOrigin(inputOrigin.value); inputOrigin.value=''" placeholder="My sister's address - {{originAdr}}" aria-label="My sister's address">
     <div class="input-group-append">
-      <button class="btn  btn-primary"(click)="changeOrigin(inputOrigin.value); inputOrigin.value=''" type="button">Change</button>
+      <button class="btn  btn-primary" (click)="changeOrigin(inputOrigin.value); inputOrigin.value=''"  type="button">Change</button>
     </div>
   </div>
   <div class="card-deck">

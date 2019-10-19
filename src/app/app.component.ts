@@ -9,6 +9,8 @@ export class AppComponent {
   originAdr = 'Eberswalder Str. 55';
 
   changeOrigin(value: string): void {
-    this.originAdr = value.trim();
+    if (value !== '') {
+      this.originAdr = value.trim();
+    }
   }
 }
