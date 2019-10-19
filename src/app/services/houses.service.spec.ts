@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 import { HousesService } from './houses.service';
 import { GoogleMapsService } from './google-maps.service';

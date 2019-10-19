@@ -1,4 +1,10 @@
 <div class="container pt-3">
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" #inputOrigin  placeholder="My sister's address - {{originAdr}}" aria-label="My sister's address">
+    <div class="input-group-append">
+      <button class="btn  btn-primary"(click)="changeOrigin(inputOrigin.value); inputOrigin.value=''" type="button">Change</button>
+    </div>
+  </div>
   <div class="card-deck">
     <div class="card mb-6 shadow-sm">
       <div class="card-header">
@@ -6,7 +12,7 @@
       </div>
       <div class="card-body">
         <ul class="list-unstyled mt-2 mb-2">
-          <app-houses-filter-list [filter]="'distance'"></app-houses-filter-list>
+          <app-houses-filter-list [filter]="'distance'" [originAdr] ="originAdr"></app-houses-filter-list>
         </ul>
       </div>
     </div>

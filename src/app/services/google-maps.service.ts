@@ -8,22 +8,19 @@ import { Observable } from 'rxjs';
 export class GoogleMapsService {
 
   gmapService = new google.maps.DistanceMatrixService();
+  destinations: google.maps.LatLng[];
 
   constructor(
     private zone: NgZone
   ) {}
 
   getDistances(origins: string[], arrayOfData: House[]): Observable<House[]> {
-    const destinations: any[] = [];
-    arrayOfData.forEach((house: House) => {
-      const destination = new google.maps.LatLng(house.coords.lat, house.coords.lon);
-      destinations.push(destination);
-    });
+    this.destinations = this.getDestinations(arrayOfData);
     return new Observable((observer) => {
       this.gmapService.getDistanceMatrix(
         {
           origins,
-          destinations,
+          destinations: this.destinations,
           travelMode: google.maps.TravelMode.WALKING
         }, (googleData: any, status) => {
           if (status === google.maps.DistanceMatrixStatus.OK) {
@@ -37,5 +34,14 @@ export class GoogleMapsService {
         }
       );
     });
+  }
+
+  private getDestinations(array: House[]) {
+    const destinations: google.maps.LatLng[] = [];
+    array.forEach((house: House) => {
+      const destination = new google.maps.LatLng(house.coords.lat, house.coords.lon);
+      destinations.push(destination);
+    });
+    return destinations;
   }
 }

@@ -6,6 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'my-dream-houses';
-  filter = '';
+  originAdr = 'Eberswalder Str. 55';
+
+  changeOrigin(value: string): void {
+    this.originAdr = value.trim();
+  }
 }
