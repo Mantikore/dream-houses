@@ -4,12 +4,12 @@ import { LoaderComponent } from '../shared/loader/loader.component';
 import { HousesService } from '../../services/houses.service';
 import { of } from 'rxjs';
 import {
+  expectedAnotherHousesDistances,
   expectedBestHouse,
   expectedFilteredMissingDataHouses,
   expectedFilteredRoomsHouses, expectedHousesDistances
 } from '../../../testing/testing-data';
 import { House } from '../../models/house';
-import { By } from '@angular/platform-browser';
 
 describe('HousesFilterListComponent', () => {
   let component: HousesFilterListComponent;
@@ -36,7 +36,6 @@ describe('HousesFilterListComponent', () => {
   });
 
   it('should show the loader before getting data', () => {
-    component.filter = 'rooms2';
     fixture.detectChanges();
     const thisElement: HTMLElement = fixture.nativeElement;
     expect(thisElement.querySelector('app-loader')).not.toBe(null);
@@ -46,9 +45,7 @@ describe('HousesFilterListComponent', () => {
     component.filter = 'rooms';
     filterByRoomsSpy = housesService.filterByRooms.and.returnValue( of(expectedFilteredRoomsHouses) );
     fixture.detectChanges();
-
     expect(filterByRoomsSpy.calls.count()).toBe(1, 'filterByRoomsSpy called once');
-
     component.data.subscribe((houses: House[]) => {
       expect(houses).toEqual(expectedFilteredRoomsHouses);
       expect(fixture.nativeElement.querySelectorAll('li').length).toBe(2);
@@ -58,9 +55,7 @@ describe('HousesFilterListComponent', () => {
     component.filter = 'noData';
     filterMissingDataSpy = housesService.filterMissingData.and.returnValue( of(expectedFilteredMissingDataHouses) );
     fixture.detectChanges();
-
     expect(filterMissingDataSpy.calls.count()).toBe(1, 'filterMissingDataSpy called once');
-
     component.data.subscribe((houses: House[]) => {
       expect(houses).toEqual(expectedFilteredMissingDataHouses);
       expect(fixture.nativeElement.querySelectorAll('li').length).toBe(1);
@@ -69,10 +64,9 @@ describe('HousesFilterListComponent', () => {
   it('should render filtered houses with distances if filter=distance(filterDistance called once)', () => {
     component.filter = 'distance';
     filterDistancesSpy = housesService.filterDistance.and.returnValue( of(expectedHousesDistances.houses) );
-    fixture.detectChanges();
-
+    component.ngOnChanges();
     expect(filterDistancesSpy.calls.count()).toBe(1, 'filterDistance called once');
-
+    fixture.detectChanges();
     component.data.subscribe((houses: House[]) => {
       expect(houses).toEqual(expectedHousesDistances.houses);
       expect(fixture.nativeElement.querySelectorAll('li').length).toBe(5);
@@ -81,10 +75,31 @@ describe('HousesFilterListComponent', () => {
   it('should render the best house if there are houses with distances', () => {
     component.filter = 'distance';
     bestHouseSpy = housesService.bestHouse.and.returnValue( of(expectedBestHouse) );
+    component.ngOnChanges();
     fixture.detectChanges();
     expect(bestHouseSpy.calls.count()).toBe(1, 'filterDistance called once');
     component.houseToMove.subscribe((house: House) => {
       expect(house).toEqual(expectedBestHouse);
+    });
+  });
+  it('should redraw the distances if this component get new origin address', () => {
+    component.filter = 'distance';
+    filterDistancesSpy = housesService.filterDistance.and.returnValue( of(expectedHousesDistances.houses) );
+    component.ngOnChanges();
+    fixture.detectChanges();
+    expect(filterDistancesSpy.calls.count()).toBe(1, 'filterDistance called for the first time');
+    component.data.subscribe((houses: House[]) => {
+      expect(houses).toEqual(expectedHousesDistances.houses);
+      expect(fixture.nativeElement.querySelectorAll('li').length).toBe(5);
+    });
+    component.originAdr = 'New Adr';
+    filterDistancesSpy = housesService.filterDistance.and.returnValue( of(expectedAnotherHousesDistances.houses) );
+    component.ngOnChanges();
+    fixture.detectChanges();
+    expect(filterDistancesSpy.calls.count()).toBe(2, 'filterDistance called for the second time');
+    component.data.subscribe((houses) => {
+      expect(houses).toEqual(expectedAnotherHousesDistances.houses);
+      expect(fixture.nativeElement.querySelectorAll('li').length).toBe(3);
     });
   });
 
