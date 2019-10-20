@@ -1,0 +1,14 @@
+image: circleci/node:10-browsers
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+
+before_script:
+  - npm install
+
+karma:
+  script:
+    - npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
+
