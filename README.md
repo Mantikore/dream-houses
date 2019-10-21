@@ -1,5 +1,6 @@
 # MyDreamHouses
 
+This is a test assignment for InterfaceMA GmbH.
 This project use [Google Distance Matrix Service API](https://developers.google.com/maps/documentation/javascript/distancematrix) to calculate distances between addresses. This is the reason why some coordinates in the provided data may not be the same as in GoogleMap Service output and that is why distance between origin address Eberswalder Straße 55 and destination address Eberswalder Straße 55 **in the REST provided data** is 435m long.
 
 Calculated distances are walking routes. You can change origin address(my sister's address) in the top section. Default Value is "Eberswalder Straße 55". It accept any formats and languages, but for some addresses you will need to specify the city(it may show you distances to Danziger Straße 66 in Hamburg, not in Berlin, if you will not specify the city).
